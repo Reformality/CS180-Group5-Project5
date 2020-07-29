@@ -13,12 +13,12 @@ import java.time.LocalDate;
         private int bYear; //input needs to be validated
         private int bDate; //input needs to be validated
         private int bMonth; //input needs to be validated
-        private String dOB;
+        
         private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
         
 
         
-        public UserAccount(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String dOB, String messageStatus) {
+        public UserAccount(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String messageStatus) {
             this.userName = userName;
             this.firstName = firstName;
             this.lastName = lastName;
@@ -27,7 +27,7 @@ import java.time.LocalDate;
             this.bYear = bYear;
             this.bDate = bDate;
             this.bMonth = bMonth;
-            this.dOB = dOB;
+            
             this.messageStatus = messageStatus;
             
         }
@@ -99,24 +99,11 @@ import java.time.LocalDate;
         }
 
 
-        public String getDOB() {
+        public String dOB() {
           
             return String.format("%d/%d/%d", getBMonth(), getBDate(), getBYear());
         }
         
-        //DOB = date of birth
-        public void setDOB(String dOB) {
-            
-            String[] input = dOB.split("/");
-            int date = Integer.parseInt(input[0]);
-            setBDate(date);
-            int month = Integer.parseInt(input[1]);
-            setBMonth(month);
-            int year = Integer.parseInt(input[2]);
-            setBYear(year);
-            this.dOB = dOB;
-        }
-
         public String getStatus() {
             return this.messageStatus;
         }
@@ -125,9 +112,6 @@ import java.time.LocalDate;
             this.messageStatus = messageStatus;
         }
 
-        public String profileInfo() { //Can we write userinfo to file with this string format?
-            return String.format("First:" + getFirstName() + ";" + "Last:" + getLastName() + ";" + "Username:" + getUserName() + ";" + "Age:" + getAge() + ";" + "DOB:" + getDOB() + ";" + "Password:" + getPassword());
-        }
 
         public static void main(String[] args) { //Ignore this. Just testing the format for DOB
             UserAccount start = new UserAccount();
@@ -143,7 +127,7 @@ import java.time.LocalDate;
             sc.nextLine();
             start.setBMonth(month);
             
-            System.out.println(start.getDOB());
+            System.out.println(start.dOB());
 
         }
 
