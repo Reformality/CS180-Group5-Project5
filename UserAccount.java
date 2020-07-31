@@ -1,4 +1,3 @@
-package Project05;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDate;
