@@ -10,15 +10,15 @@ import java.time.LocalDate;
         private String lastName;
         private int age;
         private String password;
-        private int bYear;
-        private int bDate;
-        private int bMonth;
-        private String dOB;
-        private String messageStatus;
+        private int bYear; //input needs to be validated
+        private int bDate; //input needs to be validated
+        private int bMonth; //input needs to be validated
+        
+        private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
         
 
         
-        public UserAccount(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String dOB, String messageStatus) {
+        public UserAccount(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String messageStatus) {
             this.userName = userName;
             this.firstName = firstName;
             this.lastName = lastName;
@@ -27,7 +27,7 @@ import java.time.LocalDate;
             this.bYear = bYear;
             this.bDate = bDate;
             this.bMonth = bMonth;
-            this.dOB = dOB;
+            
             this.messageStatus = messageStatus;
             
         }
@@ -99,22 +99,11 @@ import java.time.LocalDate;
         }
 
 
-        public String getDOB() {
+        public String dOB() {
           
             return String.format("%d/%d/%d", getBMonth(), getBDate(), getBYear());
         }
-        public void setDOB(String dOB) {
-            
-            String[] input = dOB.split("/");
-            int date = Integer.parseInt(input[0]);
-            setBDate(date);
-            int month = Integer.parseInt(input[1]);
-            setBMonth(month);
-            int year = Integer.parseInt(input[2]);
-            setBYear(year);
-            this.dOB = dOB;
-        }
-
+        
         public String getStatus() {
             return this.messageStatus;
         }
@@ -122,23 +111,36 @@ import java.time.LocalDate;
         public void setStatus(String messageStatus) {
             this.messageStatus = messageStatus;
         }
-
-        public String profileInfo() {
-            return String.format("First:" + this.firstName + ";" + "Last:" + this.lastName + ";" + "Username:" + this.userName + ";" + "Age:" + this.age + ";" + "DOB:" + this.dOB+ ";" + "Password:" + this.password);
+        
+        public ArrayList<String> toArrayList() {
+        	ArrayList<String> result = new ArrayList<String>();
+        	result.add(userName);
+        	result.add(firstName);
+        	result.add(lastName);
+        	result.add(String.valueOf(age));
+        	result.add(password);
+        	result.add(String.valueOf(bYear));
+        	result.add(String.valueOf(bDate));
+        	result.add(String.valueOf(bMonth));
+        	result.add(messageStatus);
+        	
+        	return result;
+        }
+        
+        public void printAccountInfo() {
+        	System.out.println("Username: " + userName);
+        	System.out.println("First Name: " + firstName);
+        	System.out.println("Last Name: " + lastName);
+        	System.out.println("Age: " + age);
+        	System.out.println("Date of Birth: " + dOB());
+        	System.out.println("Status: " + messageStatus);
         }
 
-        public static void main(String[] args) {
+
+        public static void main(String[] args) { //Ignore this. Just testing the format for DOB
             UserAccount start = new UserAccount();
             Scanner sc = new Scanner(System.in);
-            String first = sc.nextLine();
-            start.setFirstName(first);
-            String last = sc.nextLine();
-            start.setLastName(last);
-            String password = sc.nextLine();
-            start.setPassword(password);
-            int age = sc.nextInt();
-            sc.nextLine();
-            start.setAge(age);
+            
             int year = sc.nextInt();
             sc.nextLine();
             start.setBYear(year);
@@ -149,7 +151,7 @@ import java.time.LocalDate;
             sc.nextLine();
             start.setBMonth(month);
             
-            System.out.println(start.getDOB());
+            System.out.println(start.dOB());
 
         }
 
