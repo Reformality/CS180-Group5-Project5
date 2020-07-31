@@ -180,17 +180,7 @@ public class StatusClient {
             writer.flush();
 
             String end = reader.readLine();
-            /*end = end.replaceAll(":", ";");
-            String[] create = end.split(";");
             
-            start.accountHolder = new UserAccount();
-            start.accountHolder.setFirstName(create[1]);
-            start.accountHolder.setLastName(create[3]);
-            start.accountHolder.setUserName(create[5]);
-            start.accountHolder.setAge(Integer.parseInt(create[7]));
-            start.accountHolder.setDOB(create[9]);
-            start.accountHolder.setPassword(create[11]);
-            start.user.add(start.accountHolder);*/
             System.out.println(end);
             
             writer.close();
