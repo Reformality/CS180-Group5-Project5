@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
     
-    public class UserAccount2 {
+     public class UserAccount2 {
         private ArrayList<String> friends;
         private ArrayList<UserAccount2> user;
         private String userName;
@@ -18,12 +18,15 @@ import java.time.LocalDate;
         private int bDate; //input needs to be validated
         private int bMonth; //input needs to be validated
         private String email;
-
+        private ArrayList<String> likes;
+        private ArrayList<String> dislikes;
+        private ArrayList<String> interests;
+        
         private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
         
 
         
-        public UserAccount2(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String email, String messageStatus) {
+        /*public UserAccount2(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String email, String messageStatus) {
             this.userName = userName;
             this.firstName = firstName;
             this.lastName = lastName;
@@ -35,6 +38,11 @@ import java.time.LocalDate;
             this.email = email;
             this.messageStatus = messageStatus;
             
+        }*/
+        
+        public UserAccount2(String userName, String password) {
+            this.userName = userName;
+            this.password = password;
         }
 
         public UserAccount2() {
@@ -101,7 +109,30 @@ import java.time.LocalDate;
         public void setBDate(int bDate) {
         	this.bDate = bDate;
         }
+        
+        public ArrayList<String> getLikes() {
 
+            return likes;
+        }
+        public ArrayList<String> getDislikes() {
+            return dislikes;
+        }
+        public ArrayList<String> getInterests() {
+            return interests;
+        }
+
+        public void setLikes(ArrayList<String> likes) {
+            
+            this.likes = likes;
+        }
+        public void setDislikes(ArrayList<String> dislikes) {
+            
+            this.dislikes = dislikes;
+        }
+        public void setInterests(ArrayList<String> interests) {
+            
+            this.interests = interests;
+        }
 
         public int getBMonth() {
         	return this.bMonth;
@@ -141,6 +172,10 @@ import java.time.LocalDate;
         	return result;
         }
         
+        public String toString() {
+            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "Likes:" + likes.toString() + "\n" + "Dislikes:" + dislikes.toString() + "\n" + "Interest:" + interests.toString());
+        }
+        
         public void printAccountInfo() {
         	System.out.println("Username: " + userName);
         	System.out.println("First Name: " + firstName);
@@ -150,7 +185,6 @@ import java.time.LocalDate;
             System.out.println("Contact: " + email);
         	System.out.println("Status: " + messageStatus);
         }
-
 
         public static void main(String[] args) { //Ignore this. Just testing the format for DOB
             UserAccount2 start = new UserAccount2();
