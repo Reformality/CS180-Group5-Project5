@@ -18,9 +18,9 @@ import java.time.LocalDate;
         private int bDate; //input needs to be validated
         private int bMonth; //input needs to be validated
         private String email;
-        private ArrayList<String> likes;
-        private ArrayList<String> dislikes;
-        private ArrayList<String> interests;
+        private String likes;
+        private String dislikes;
+        private String interests;
         
         private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
         
@@ -110,26 +110,26 @@ import java.time.LocalDate;
         	this.bDate = bDate;
         }
         
-        public ArrayList<String> getLikes() {
+        public String getLikes() {
 
             return likes;
         }
-        public ArrayList<String> getDislikes() {
+        public String getDislikes() {
             return dislikes;
         }
-        public ArrayList<String> getInterests() {
+        public String getInterests() {
             return interests;
         }
 
-        public void setLikes(ArrayList<String> likes) {
+        public void setLikes(String likes) {
             
             this.likes = likes;
         }
-        public void setDislikes(ArrayList<String> dislikes) {
+        public void setDislikes(String dislikes) {
             
             this.dislikes = dislikes;
         }
-        public void setInterests(ArrayList<String> interests) {
+        public void setInterests(String interests) {
             
             this.interests = interests;
         }
@@ -173,7 +173,7 @@ import java.time.LocalDate;
         }
         
         public String toString() {
-            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "Likes:" + likes.toString() + "\n" + "Dislikes:" + dislikes.toString() + "\n" + "Interest:" + interests.toString());
+            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "Likes:" + likes + "\n" + "Dislikes:" + dislikes + "\n" + "Interest:" + interests);
         }
         
         public void printAccountInfo() {
