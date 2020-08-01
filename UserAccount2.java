@@ -19,7 +19,7 @@ import java.time.LocalDate;
         private int bMonth; //input needs to be validated
         private String email;
         private String likes;
-        private String dislikes;
+        
         private String interests;
         private String about;
         private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
@@ -114,9 +114,7 @@ import java.time.LocalDate;
 
             return likes;
         }
-        public String getDislikes() {
-            return dislikes;
-        }
+        
         public String getInterests() {
             return interests;
         }
@@ -125,10 +123,7 @@ import java.time.LocalDate;
             
             this.likes = likes;
         }
-        public void setDislikes(String dislikes) {
-            
-            this.dislikes = dislikes;
-        }
+        
         public void setInterests(String interests) {
             
             this.interests = interests;
@@ -180,7 +175,7 @@ import java.time.LocalDate;
         }
         
         public String toString() {
-            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "About me:" + this.about + "\n" + "Likes:" + likes + "\n" + "Dislikes:" + dislikes + "\n" + "Interest:" + interests);
+            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "About me: " + this.about + "\n" + "Likes: " + likes + "\n" + "Interest: " + interests);
         }
         
         public void printAccountInfo() {
