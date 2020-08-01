@@ -21,7 +21,7 @@ import java.time.LocalDate;
         private String likes;
         private String dislikes;
         private String interests;
-        
+        private String about;
         private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
         
 
@@ -133,6 +133,13 @@ import java.time.LocalDate;
             
             this.interests = interests;
         }
+         
+        public String getAbout() {
+            return this.about;
+        }
+        public void setAbout(String about) {
+            this.about = about;
+        }
 
         public int getBMonth() {
         	return this.bMonth;
@@ -173,7 +180,7 @@ import java.time.LocalDate;
         }
         
         public String toString() {
-            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "Likes:" + likes + "\n" + "Dislikes:" + dislikes + "\n" + "Interest:" + interests);
+            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "About me:" + this.about + "\n" + "Likes:" + likes + "\n" + "Dislikes:" + dislikes + "\n" + "Interest:" + interests);
         }
         
         public void printAccountInfo() {
