@@ -15,13 +15,16 @@ public class Client {
         boolean option_relogin = true;  //login page
         boolean option_accountPage = true; //account page
         Integer result;
+        
+        
         //this loop returns to the log in page
+        //Menu ------------------------------------------------------------------------------------------------
         while (option_relogin) {
             // Welcome
             JOptionPane.showMessageDialog(null, "Welcome to Profile",
                     "Profile", JOptionPane.INFORMATION_MESSAGE);
 
-            // Create a account?
+            // Login menu options---------------------------------------------------------------------------------------
             String[] options = {"Yes", "No", "Quit"};
             result = JOptionPane.showOptionDialog(null, "Existing account?",
                     "Profile",
@@ -29,8 +32,9 @@ public class Client {
                     null, options, options[0]);
             os.writeObject(result); // give server 2 options: create account mode or access account mode
             os.flush();
-
-            if(result == 0) { // existing account
+            option_accountPage = true;
+            // Existing Account -----------------------------------------------------------------------------------------
+            if(result == 0) { 
                 // Login in
                 Boolean correctAcc = false;
                 do {
@@ -70,7 +74,13 @@ public class Client {
                         "Profile", JOptionPane.INFORMATION_MESSAGE);
 
                 option_accountPage = true;
+                
+                
+                
+                
+                //Account Page loop START----------------------------------------------------------------------------------
                 while (option_accountPage) {
+                	option_accountPage = true;
                     // Choose from operations
                     String[] mainOption = {"Account Info","Profile", "Friend", "Log Out"};
 
@@ -161,21 +171,26 @@ public class Client {
                             os.flush();
                             option_accountPage = true; // back to account page
                         }
-                    } else if (optionInt == 2) { //friend
+                   
+                    
+                    //Friend---------------------------------------------------------------------------------------------
+                    } else if (optionInt == 2) { 
                         String[] friendOption = {"View Friend List", "Pending Friend Request", "Send Friend Request"};
                         Integer friendOptionInt = JOptionPane.showOptionDialog(null,
                                 "Do you want to like to do next? \n" +
                                         "Change password or Delete account",
                                 "Profile", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
                                 null, friendOption, friendOption[0]);
+                        System.out.println("pre flush");
                         os.writeObject(friendOptionInt);
                         os.flush();
+                        System.out.println("post flush sent " + friendOptionInt);
 
 
                         String friendUsername;
 
                         switch (friendOptionInt) {
-                            case 0:
+                            case 0: // View friend list
                                 ArrayList<UserAccount> friendList = (ArrayList<UserAccount>) is.readObject();
                                 System.out.println(friendList.size());
                                 ArrayList<String> friendListName = new ArrayList<>();
@@ -184,11 +199,13 @@ public class Client {
                                 }
                                 System.out.println(friendListName.size());
                                 String[] friendListNameArr = friendListName.toArray(new String[friendListName.size()]);
+                                System.out.println("Friend Option 0, pre Do");
                                 do {
                                     friendUsername = (String) JOptionPane.showInputDialog(null, "Select the friend to view profile",
                                             "Profile", JOptionPane.QUESTION_MESSAGE, null, friendListNameArr,
                                             friendListNameArr[0]);
                                 } while (friendUsername == null);
+                                System.out.println("Friend Option 0, post Do");
                                 os.writeObject(friendUsername);
                                 os.flush();
                                 String profileString = (String) is.readObject();
@@ -196,7 +213,7 @@ public class Client {
                                         "Profile", JOptionPane.INFORMATION_MESSAGE);
                                 option_accountPage = true; // back to account page
                                 break;
-                            case 1:
+                            case 1: // Pending Friend list
                                 ArrayList<UserAccount> pendingList = (ArrayList<UserAccount>) is.readObject();
                                 ArrayList<String> pendingListName = new ArrayList<>();
                                 for (int i = 0; i < pendingList.size(); i++) {
@@ -212,7 +229,7 @@ public class Client {
                                 os.flush();
                                 option_accountPage = true; // back to account page
                                 break;
-                            case 2:
+                            case 2: //Send Friend Request
                                 ArrayList<String> users = (ArrayList<String>) is.readObject();
                                 String[] usersArr = users.toArray(new String[users.size()]);
                                 do {
@@ -231,11 +248,13 @@ public class Client {
                         option_relogin = true; // back to login page
                         option_accountPage = false; // back to login page
                     }
-                }
+                } 
+                // Account menu loop END------------------------------------------------------------------------------------------
 
 
-
-            } else if(result == 1) { // creating account
+                
+            //Create Account --------------------------------------------------------------------------------------------
+            } else if(result == 1) { 
                 String username;
                 String password;
                 do {
@@ -267,7 +286,7 @@ public class Client {
                         "Profile", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-        }
+        } // Account Page loop END
     }
 
 

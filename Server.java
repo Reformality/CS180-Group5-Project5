@@ -37,11 +37,12 @@ public class Server implements Runnable {
             boolean option_accountPage = true; //account page
 
             // Check all user
-            ArrayList<String> users = new ArrayList<>();
+            ArrayList<String> users;
 
 
             //this loop returns to the log in page
             while (option_relogin) {
+
                 option = (Integer) is.readObject();
                 if(option == 0) { // existing account
                     // login
@@ -61,8 +62,11 @@ public class Server implements Runnable {
                         os.writeObject(correctAcc);
                         os.flush();
                     } while (!correctAcc);
+                    option_accountPage = true;
 
                     while (option_accountPage) {
+                    	users = new ArrayList<>();
+                    	option_accountPage = true;
                         // Check users
                         if (userBase.size() > 1) {
                             for (int i = 0; i < userBase.size(); i++) {
@@ -70,8 +74,10 @@ public class Server implements Runnable {
                             }
                         }
                         //select operations
+                        System.out.println("Account Menu Pre");
                         Integer optionInt = (Integer) is.readObject();
-                        if(optionInt == 0) { // account info
+                        System.out.println("Account Menu Post + " + optionInt);
+                        if (optionInt == 0) { // account info
                             Integer accountOptionInc = (Integer) is.readObject();
                             switch (accountOptionInc) {
                                 case 0: // change password
@@ -153,7 +159,9 @@ public class Server implements Runnable {
 
                         } else if (optionInt == 2) { //friend
                             String receiveUser;
+                            System.out.println("pre flush");
                             Integer friendOptionInt = (Integer) is.readObject();
+                            System.out.println("received friend option "+ friendOptionInt);
                             switch (friendOptionInt) {
                                 case 0:
                                     for (int i = 0; i < userBase.size(); i++) {
@@ -252,7 +260,7 @@ public class Server implements Runnable {
 
                         } else if (optionInt == 3) {
                             option_relogin = true; // back to login page
-                            option_accountPage = false; // back to login page
+                            option_accountPage = false; // back to account page
                         }
                     }
 

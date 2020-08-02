@@ -20,9 +20,9 @@ public class UserAccount implements Serializable {
     private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
 
     //private ArrayList<UserAccount> user;
-    private ArrayList<UserAccount> friendList = new ArrayList<>();
-    private ArrayList<UserAccount> pendingList = new ArrayList<>();
-    private ArrayList<UserAccount> sendingList = new ArrayList<>();
+    public ArrayList<UserAccount> friendList = new ArrayList<>();
+    public ArrayList<UserAccount> pendingList = new ArrayList<>();
+    public ArrayList<UserAccount> sendingList = new ArrayList<>();
 
     public UserAccount(String userName, String password) {
         this.userName = userName;
