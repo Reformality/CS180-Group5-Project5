@@ -105,7 +105,7 @@ public class Client {
                                 String password;
                                 do {
                                     password = JOptionPane.showInputDialog(null, "Enter the new password:",
-                                            "GPA Calculator", JOptionPane.QUESTION_MESSAGE);
+                                            "Profile", JOptionPane.QUESTION_MESSAGE);
                                     if ((password == null) || (password.isBlank())) {
                                         JOptionPane.showMessageDialog(null, "Password cannot be empty!",
                                                 "Profile",
@@ -145,20 +145,68 @@ public class Client {
                         os.flush();
                         if (profileOptionInc == 0) { // create and edit
                             ArrayList<String> profileInfo = new ArrayList<>(); //fn, ln, mon, day, y, age, email, like, interest, status, about
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter the first name:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter the last name:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter the birth month:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter the birth day:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter the birth year:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter the age:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter your email:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter your like:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter your interests:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter your status:", "Profile", JOptionPane.QUESTION_MESSAGE));
-                            profileInfo.add(JOptionPane.showInputDialog(null, "Enter your about me message:", "Profile", JOptionPane.QUESTION_MESSAGE));
+                            String firstname;
+                            do {
+                                firstname = JOptionPane.showInputDialog(null, "Enter your first name:", "Profile", JOptionPane.QUESTION_MESSAGE);
+                                if (firstname.isBlank() || firstname == null) {
+                                    JOptionPane.showMessageDialog(null, "Please enter a valid first name.", "Profile",
+                                            JOptionPane.ERROR_MESSAGE);
+
+                                }
+                            } while (firstname.isBlank() || firstname == null);
+                            profileInfo.add(firstname);
+                            String lastname;
+                            do {
+                                lastname = JOptionPane.showInputDialog(null, "Enter your last name:", "Profile", JOptionPane.QUESTION_MESSAGE);
+                                if (lastname.isBlank() || lastname == null) {
+                                    JOptionPane.showMessageDialog(null, "Please enter a valid last name.", "Profile",
+                                            JOptionPane.ERROR_MESSAGE);
+
+                                }
+                            } while (firstname.isBlank() || firstname == null);
+                            profileInfo.add(lastname);
+                            String year;
+                            String[] doB;
+                            do {
+                                year = JOptionPane.showInputDialog(null, "Please enter your date of Birth in the format MM/DD/YYYY.", "Profile",
+                                        JOptionPane.QUESTION_MESSAGE);
+                                if (!year.matches("[0-1][0-2]/([0-3][0-1]|[0-2][0-9])/[0-9][0-9][0-9][0-9]") || (year.matches("")) || year.isBlank()) {
+                                    JOptionPane.showMessageDialog(null, "Please enter a date of birth.", "Profile", JOptionPane.ERROR_MESSAGE);
+                                }
+
+                            } while (!year.matches("[0-1][0-2]/([0-3][0-1]|[0-2][0-9])/[0-9][0-9][0-9][0-9]") || (year.matches("")) || year.isBlank());
+                            doB = year.split("/");
+
+                            profileInfo.add(doB[0]);
+                            profileInfo.add(doB[1]);
+                            profileInfo.add(doB[2]);
+                            String age;
+                            do {
+                                age = JOptionPane.showInputDialog(null, "Please enter your age.", "Profile",
+                                        JOptionPane.QUESTION_MESSAGE);
+                                if (!age.matches("-?\\d+(\\.\\d+)?") || (age.matches("")) || age.isBlank()) {
+                                    JOptionPane.showMessageDialog(null, "Please enter a valid age.", "Profile", JOptionPane.ERROR_MESSAGE);
+                                }
+
+                            } while (!age.matches("-?\\d+(\\.\\d+)?") || (age.matches("")) || age.isBlank());
+                            profileInfo.add(age);
+                            String mail;
+                            do {
+                                mail = JOptionPane.showInputDialog(null, "Enter your email address", "Profile", JOptionPane.QUESTION_MESSAGE);
+                                if (mail.isBlank() || mail == null) {
+                                    JOptionPane.showMessageDialog(null, "Please enter a valid email address.", "Profile",
+                                            JOptionPane.ERROR_MESSAGE);
+
+                                }
+                            } while (mail.isBlank() || mail == null);
+                            profileInfo.add(mail);
+                            profileInfo.add(JOptionPane.showInputDialog(null, "What are your likes?", "Profile", JOptionPane.QUESTION_MESSAGE));
+                            profileInfo.add(JOptionPane.showInputDialog(null, "What are your interests?", "Profile", JOptionPane.QUESTION_MESSAGE));
+                            profileInfo.add(JOptionPane.showInputDialog(null, "Type in a status message.", "Profile", JOptionPane.QUESTION_MESSAGE));
+                            profileInfo.add(JOptionPane.showInputDialog(null, "Type in a brief note about you.", "Profile", JOptionPane.QUESTION_MESSAGE));
                             os.writeObject(profileInfo);
                             os.flush();
-                            option_accountPage = true; // back to account page
+                                    option_accountPage = true; // back to account page
                         } else if (profileOptionInc == 1){
                             UserAccount viewUser = (UserAccount) is.readObject();
                             JOptionPane.showMessageDialog(null, viewUser.profileToString(),
