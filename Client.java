@@ -257,19 +257,33 @@ public class Client {
             } else if(result == 1) { 
                 String username;
                 String password;
+                String isNew;
                 do {
-                    username = JOptionPane.showInputDialog(null, "Enter the username:",
+                    username = JOptionPane.showInputDialog(null, "Enter your username:",
                             "Profile", JOptionPane.QUESTION_MESSAGE);
-                    if ((username == null) || (username.isBlank())) {
-                        JOptionPane.showMessageDialog(null, "Name cannot be empty!",
-                                "Profile",
-                                JOptionPane.ERROR_MESSAGE);
+                    os.writeObject(username);
+                    os.flush();
+                    System.out.println("yay");
+                    isNew = (String) is.readObject();
+                    System.out.println("yay");
+                    if (!(username.equals(isNew))) {
+                        isNew = null;
                     }
-                } while ((username == null) || (username.isBlank()));
+                    if ((username == null) || (username.isBlank()) || (username.equals(isNew))) {
+                        isNew = username;
+                        JOptionPane.showMessageDialog(null, "Name is invalid/already taken!",
+                            "Profile",
+                            JOptionPane.ERROR_MESSAGE);
+
+                    } 
+                    os.writeObject(isNew);
+                    os.flush();
+                    System.out.println(isNew + " nay");
+                } while ((username == null) || (username.isBlank()) || isNew != null);
 
                 do {
-                    password = JOptionPane.showInputDialog(null, "Enter the password:",
-                            "GPA Calculator", JOptionPane.QUESTION_MESSAGE);
+                    password = JOptionPane.showInputDialog(null, "Enter a strong password:",
+                            "Profile", JOptionPane.QUESTION_MESSAGE);
                     if ((password == null) || (password.isBlank())) {
                         JOptionPane.showMessageDialog(null, "Password cannot be empty!",
                                 "Profile",
@@ -278,7 +292,6 @@ public class Client {
                 } while ((password == null) || (password.isBlank()));
                 UserAccount user = new UserAccount(username, password);
                 os.writeObject(user);
-                os.flush();
                 JOptionPane.showMessageDialog(null, "Account Created! Please login again!",
                         "Profile", JOptionPane.INFORMATION_MESSAGE);
             } else if (result == 2) {
