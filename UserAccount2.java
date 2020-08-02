@@ -175,7 +175,7 @@ import java.time.LocalDate;
         }
         
         public String toString() {
-            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "About me: " + this.about + "\n" + "Likes: " + likes + "\n" + "Interest: " + interests);
+            return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "About me: " + this.about + "\n" + "Likes: " + likes + "\n" + "Interest: " + interests + "\n" + "Status: " + messageStatus);
         }
         
         public void printAccountInfo() {
