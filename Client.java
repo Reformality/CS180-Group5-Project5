@@ -41,7 +41,7 @@ public class Client {
                     String username;
                     String password;
                     do {
-                        username = JOptionPane.showInputDialog(null, "Enter your username:",
+                        username = JOptionPane.showInputDialog(null, "Enter the username:",
                                 "Profile", JOptionPane.QUESTION_MESSAGE);
                         if ((username == null) || (username.isBlank())) {
                             JOptionPane.showMessageDialog(null, "Name cannot be empty!",
@@ -50,7 +50,7 @@ public class Client {
                         }
                     } while ((username == null) || (username.isBlank()));
                     do {
-                        password = JOptionPane.showInputDialog(null, "Enter your password:",
+                        password = JOptionPane.showInputDialog(null, "Enter the password:",
                                 "Profile", JOptionPane.QUESTION_MESSAGE);
                         if ((password == null) || (password.isBlank())) {
                             JOptionPane.showMessageDialog(null, "Password cannot be empty!",
@@ -72,7 +72,7 @@ public class Client {
                 } while (!correctAcc);
                 JOptionPane.showMessageDialog(null, "Account Found! Logging in...",
                         "Profile", JOptionPane.INFORMATION_MESSAGE);
-
+                
                 option_accountPage = true;
                 
                 
@@ -82,7 +82,7 @@ public class Client {
                 while (option_accountPage) {
                 	option_accountPage = true;
                     // Choose from operations
-                    String[] mainOption = {"Account Info", "Profile", "Friend", "Log Out"};
+                    String[] mainOption = {"Account Info","Profile", "Friend", "Log Out"};
 
                     Integer optionInt = JOptionPane.showOptionDialog(null,
                             "What would you like to do next? \n" +
@@ -104,7 +104,7 @@ public class Client {
                             case 0:
                                 String password;
                                 do {
-                                    password = JOptionPane.showInputDialog(null, "Enter your new password:",
+                                    password = JOptionPane.showInputDialog(null, "Enter the new password:",
                                             "Profile", JOptionPane.QUESTION_MESSAGE);
                                     if ((password == null) || (password.isBlank())) {
                                         JOptionPane.showMessageDialog(null, "Password cannot be empty!",
@@ -223,6 +223,7 @@ public class Client {
                     
                     //Friend---------------------------------------------------------------------------------------------
                     } else if (optionInt == 2) { 
+                    
                         String[] friendOption = {"View Friend List", "Pending Friend Request", "Send Friend Request"};
                         Integer friendOptionInt = JOptionPane.showOptionDialog(null,
                                 "Do you want to like to do next? \n" +
@@ -234,11 +235,20 @@ public class Client {
                         os.flush();
                         System.out.println("post flush sent " + friendOptionInt);
 
-
                         String friendUsername;
 
                         switch (friendOptionInt) {
                             case 0: // View friend list
+                                System.out.println("I'm in");
+                                Boolean noFriend = (Boolean) is.readObject();
+                                System.out.println(noFriend);
+                                if (noFriend == true) {
+                                    
+                                    JOptionPane.showMessageDialog(null, "Your friend list is empty.",
+                                    "Profile", JOptionPane.INFORMATION_MESSAGE);
+                                    option_accountPage = true;
+                                    break;
+                                } 
                                 ArrayList<UserAccount> friendList = (ArrayList<UserAccount>) is.readObject();
                                 System.out.println(friendList.size());
                                 ArrayList<String> friendListName = new ArrayList<>();
@@ -262,6 +272,15 @@ public class Client {
                                 option_accountPage = true; // back to account page
                                 break;
                             case 1: // Pending Friend list
+                            noFriend = (Boolean) is.readObject();
+                                System.out.println(noFriend);
+                                if (noFriend == true) {
+                                    
+                                    JOptionPane.showMessageDialog(null, "Your pending friend list is empty.",
+                                    "Profile", JOptionPane.INFORMATION_MESSAGE);
+                                    option_accountPage = true;
+                                    break;
+                                } 
                                 ArrayList<UserAccount> pendingList = (ArrayList<UserAccount>) is.readObject();
                                 ArrayList<String> pendingListName = new ArrayList<>();
                                 for (int i = 0; i < pendingList.size(); i++) {
