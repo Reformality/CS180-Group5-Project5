@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,154 +32,237 @@ public class Server implements Runnable {
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream())) {
 
             Integer option;
-            
+
             boolean option_relogin = true; // login page
             boolean option_accountPage = true; //account page
-            
+
+            // Check all user
+            ArrayList<String> users = new ArrayList<>();
+
+
             //this loop returns to the log in page
             while (option_relogin) {
-            	option = (Integer) is.readObject();
-            	if(option == 0) { // existing account
-	                // login
-	                String username;
-	                String password;
-	                Boolean correctAcc = false;
-	                do {
-	                    username = (String) is.readObject();
-	                    password = (String) is.readObject();
-	                    for (int i = 0; i < userBase.size(); i++) {
-	                        if (userBase.get(i).getUserName().equals(username) &&
-	                                userBase.get(i).getPassword().equals(password)) {
-	                            correctAcc = true;
-	                            option_relogin = false;
-	                        }
-	                    }
-	                    os.writeObject(correctAcc);
-	                    os.flush();
-	                } while (!correctAcc);
-	                
-	                while (option_accountPage) {
-		                //select operations
-		                Integer optionInt = (Integer) is.readObject();
-		                if(optionInt == 0) { // account info
-		                    Integer accountOptionInc = (Integer) is.readObject();
-		                    switch (accountOptionInc) {
-		                        case 0: // change password
-		                            String newPassword = (String) is.readObject();
-		                            for (int i = 0; i < userBase.size(); i++) {
-		                                if (userBase.get(i).getUserName().equals(username)) {
-		                                    userBase.get(i).setPassword(newPassword);
-		                                    option_relogin = true; //goes back to log in menu
-		                                }
-		                            }
-		                            break;
-		                        case 1: // delete account
-		                            Integer deleteInt = (Integer) is.readObject();
-		                            if (deleteInt == 0) {
-		                                for (int i = 0; i < userBase.size(); i++) {
-		                                    if (userBase.get(i).getUserName().equals(username)) {
-		                                        userBase.remove(i);
-		                                        option_relogin = true; //goes back to log in menu
-		                                    }
-		                                }
-		                            }
-		
-		                            break;
-		                    }
-		                } else if (optionInt == 1) { //Profile
-		                    Integer profileOptionInc = (Integer) is.readObject();
-		                    if (profileOptionInc == 0) { // create and edit
-		                        ArrayList<String> profileInfo = (ArrayList<String>) is.readObject(); //fn, ln, mon, day, y, age, email, like, interest, status, about
-		                        for (int i = 0; i < userBase.size(); i++) {
-		                            if (userBase.get(i).getUserName().equals(username)) {
-		                                userBase.get(i).setFirstName(profileInfo.get(0));
-		                                userBase.get(i).setLastName(profileInfo.get(1));
-		                                userBase.get(i).setBMonth(Integer.parseInt(profileInfo.get(2)));
-		                                userBase.get(i).setBDate(Integer.parseInt(profileInfo.get(3)));
-		                                userBase.get(i).setBYear(Integer.parseInt(profileInfo.get(4)));
-		                                userBase.get(i).setAge(Integer.parseInt(profileInfo.get(5)));
-		                                userBase.get(i).setEmail(profileInfo.get(6));
-		                                userBase.get(i).setLikes(profileInfo.get(7));
-		                                userBase.get(i).setInterests(profileInfo.get(8));
-		                                userBase.get(i).setStatus(profileInfo.get(9));
-		                                userBase.get(i).setAbout(profileInfo.get(10));
-		                                option_accountPage = true; // back to account page
-		                            }
-		                        }
-		
-		
-		                    } else if (profileOptionInc == 1){
-		                        for (int i = 0; i < userBase.size(); i++) {
-		                            if (userBase.get(i).getUserName().equals(username)) {
-		                                os.writeObject(userBase.get(i));
-		                                os.flush();
-		                                option_accountPage = true; // back to account page
-		                            }
-		                        }
-		                    } else if (profileOptionInc == 2) {
-		                        Integer deleteProInt = (Integer) is.readObject();
-		                        if (deleteProInt == 0) {
-		                            for (int i = 0; i < userBase.size(); i++) {
-		                                if (userBase.get(i).getUserName().equals(username)) {
-		                                    userBase.get(i).setFirstName(null);
-		                                    userBase.get(i).setLastName(null);
-		                                    userBase.get(i).setBMonth(0);
-		                                    userBase.get(i).setBDate(0);
-		                                    userBase.get(i).setBYear(-1);
-		                                    userBase.get(i).setAge(-1);
-		                                    userBase.get(i).setEmail(null);
-		                                    userBase.get(i).setLikes(null);
-		                                    userBase.get(i).setInterests(null);
-		                                    userBase.get(i).setStatus(null);
-		                                    userBase.get(i).setAbout(null);
-		                                    System.out.println(userBase.get(i).profileToString());
-		                                    option_accountPage = true; // back to account page
-		                                }
-		                            }
-		                        }
-		                    }
-		
-		
-		
-		                } else if (optionInt == 2) { //friend
-		
-		                } else if (optionInt == 3) {
-		                	option_relogin = true; // back to login page
-			            	option_accountPage = false; // back to login page
-			            }
-            		}
-	            
-	
-	
-	            } else if (option == 1) { // creating account
-	                //checking if the username already exists in the userBase.
-			String isNew = null;
-			String isOld = null;
-			String itsOld;
-			System.out.println(isNew + " yay");
-			do {                  
-			    isNew = (String) is.readObject();
-			    if (userBase.size() != 0) {
+                option = (Integer) is.readObject();
+                if(option == 0) { // existing account
+                    // login
+                    String username;
+                    String password;
+                    Boolean correctAcc = false;
+                    do {
+                        username = (String) is.readObject();
+                        password = (String) is.readObject();
+                        for (int i = 0; i < userBase.size(); i++) {
+                            if (userBase.get(i).getUserName().equals(username) &&
+                                    userBase.get(i).getPassword().equals(password)) {
+                                correctAcc = true;
+                                option_relogin = false;
+                            }
+                        }
+                        os.writeObject(correctAcc);
+                        os.flush();
+                    } while (!correctAcc);
 
-				for (int i = 0; i < userBase.size(); i++) {
+                    while (option_accountPage) {
+                        // Check users
+                        if (userBase.size() > 1) {
+                            for (int i = 0; i < userBase.size(); i++) {
+                                users.add(userBase.get(i).getUserName());
+                            }
+                        }
+                        //select operations
+                        Integer optionInt = (Integer) is.readObject();
+                        if(optionInt == 0) { // account info
+                            Integer accountOptionInc = (Integer) is.readObject();
+                            switch (accountOptionInc) {
+                                case 0: // change password
+                                    String newPassword = (String) is.readObject();
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            userBase.get(i).setPassword(newPassword);
+                                            option_relogin = true; //goes back to log in menu
+                                        }
+                                    }
+                                    break;
+                                case 1: // delete account
+                                    Integer deleteInt = (Integer) is.readObject();
+                                    if (deleteInt == 0) {
+                                        for (int i = 0; i < userBase.size(); i++) {
+                                            if (userBase.get(i).getUserName().equals(username)) {
+                                                userBase.remove(i);
+                                                option_relogin = true; //goes back to log in menu
+                                            }
+                                        }
+                                    }
 
-				    if (userBase.get(i).getUserName().equals(isNew)) {
-					isOld = userBase.get(i).getUserName();
+                                    break;
+                            }
+                        } else if (optionInt == 1) { //Profile
+                            Integer profileOptionInc = (Integer) is.readObject();
+                            if (profileOptionInc == 0) { // create and edit
+                                ArrayList<String> profileInfo = (ArrayList<String>) is.readObject(); //fn, ln, mon, day, y, age, email, like, interest, status, about
+                                for (int i = 0; i < userBase.size(); i++) {
+                                    if (userBase.get(i).getUserName().equals(username)) {
+                                        userBase.get(i).setFirstName(profileInfo.get(0));
+                                        userBase.get(i).setLastName(profileInfo.get(1));
+                                        userBase.get(i).setBMonth(Integer.parseInt(profileInfo.get(2)));
+                                        userBase.get(i).setBDate(Integer.parseInt(profileInfo.get(3)));
+                                        userBase.get(i).setBYear(Integer.parseInt(profileInfo.get(4)));
+                                        userBase.get(i).setAge(Integer.parseInt(profileInfo.get(5)));
+                                        userBase.get(i).setEmail(profileInfo.get(6));
+                                        userBase.get(i).setLikes(profileInfo.get(7));
+                                        userBase.get(i).setInterests(profileInfo.get(8));
+                                        userBase.get(i).setStatus(profileInfo.get(9));
+                                        userBase.get(i).setAbout(profileInfo.get(10));
+                                        option_accountPage = true; // back to account page
+                                    }
+                                }
 
-				    } 
 
-				}
-			    }
-			    os.writeObject(isOld);
+                            } else if (profileOptionInc == 1){
+                                for (int i = 0; i < userBase.size(); i++) {
+                                    if (userBase.get(i).getUserName().equals(username)) {
+                                        os.writeObject(userBase.get(i));
+                                        os.flush();
+                                        option_accountPage = true; // back to account page
+                                    }
+                                }
+                            } else if (profileOptionInc == 2) {
+                                Integer deleteProInt = (Integer) is.readObject();
+                                if (deleteProInt == 0) {
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            userBase.get(i).setFirstName(null);
+                                            userBase.get(i).setLastName(null);
+                                            userBase.get(i).setBMonth(0);
+                                            userBase.get(i).setBDate(0);
+                                            userBase.get(i).setBYear(-1);
+                                            userBase.get(i).setAge(-1);
+                                            userBase.get(i).setEmail(null);
+                                            userBase.get(i).setLikes(null);
+                                            userBase.get(i).setInterests(null);
+                                            userBase.get(i).setStatus(null);
+                                            userBase.get(i).setAbout(null);
+                                            System.out.println(userBase.get(i).profileToString());
+                                            option_accountPage = true; // back to account page
+                                        }
+                                    }
+                                }
+                            }
 
-			    os.flush(); 
-			    itsOld = (String) is.readObject();
-			} while (itsOld != null);
-			System.out.println("yay");
-			userBase.add((UserAccount) is.readObject());  
-	            } else if (option == 2) {
-	            	return;
-	            }
+
+
+                        } else if (optionInt == 2) { //friend
+                            String receiveUser;
+                            Integer friendOptionInt = (Integer) is.readObject();
+                            switch (friendOptionInt) {
+                                case 0:
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            os.writeObject(userBase.get(i).getFriendList());
+                                            os.flush();
+                                        }
+                                    }
+                                    receiveUser = (String) is.readObject();
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(receiveUser)) {
+                                            os.writeObject(userBase.get(i).profileToString());
+                                            os.flush();
+                                        }
+                                    }
+                                    option_accountPage = true; // back to account page
+                                    break;
+                                case 1:
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            os.writeObject(userBase.get(i).getPendingList());
+                                            os.flush();
+                                        }
+                                    }
+                                    receiveUser = (String) is.readObject();
+                                    UserAccount tempTargetUser = null;
+                                    UserAccount tempThisUser = null;
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(receiveUser)) {
+                                            tempTargetUser = userBase.get(i);
+                                        }
+                                    }
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            tempThisUser = userBase.get(i);
+                                        }
+                                    }
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(receiveUser)) {
+                                            userBase.get(i).getPendingList().remove(tempThisUser/*userBase.get(i).getPendingList().indexOf(tempThisUser)*/); //###BUGGED
+                                            userBase.get(i).getFriendList().add(tempThisUser);
+                                            System.out.println(userBase.get(i).getPendingList().size());
+                                            System.out.println(userBase.get(i).getSendingList().size());
+                                            System.out.println(userBase.get(i).getFriendList().size());
+                                        }
+                                    }
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            userBase.get(i).getSendingList().remove(tempTargetUser/*userBase.get(i).getSendingList().indexOf(tempTargetUser)*/); //###BUGGED
+                                            userBase.get(i).getFriendList().add(tempTargetUser);
+                                            System.out.println(userBase.get(i).getPendingList().size());
+                                            System.out.println(userBase.get(i).getSendingList().size());
+                                            System.out.println(userBase.get(i).getFriendList().size());
+                                        }
+                                    }
+                                    option_accountPage = true; // back to account page
+                                    break;
+                                case 2:
+                                    os.writeObject(users);
+                                    os.flush();
+
+                                    receiveUser = (String) is.readObject();
+                                    UserAccount tempTargetUser2 = null;
+                                    UserAccount tempThisUser2 = null;
+
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(receiveUser)) {
+                                            tempTargetUser2 = userBase.get(i);
+                                        }
+                                    }
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            tempThisUser2 = userBase.get(i);
+                                        }
+                                    }
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(receiveUser)) {
+                                            userBase.get(i).getPendingList().add(tempThisUser2);
+                                            System.out.println(userBase.get(i).getPendingList().size());
+                                            System.out.println(userBase.get(i).getSendingList().size());
+                                            System.out.println(userBase.get(i).getFriendList().size());
+                                        }
+                                    }
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            userBase.get(i).getSendingList().add(tempTargetUser2);
+                                            System.out.println(userBase.get(i).getPendingList().size());
+                                            System.out.println(userBase.get(i).getSendingList().size());
+                                            System.out.println(userBase.get(i).getFriendList().size());
+                                        }
+                                    }
+                                    option_accountPage = true; // back to account page
+                                    break;
+                            }
+
+
+                        } else if (optionInt == 3) {
+                            option_relogin = true; // back to login page
+                            option_accountPage = false; // back to login page
+                        }
+                    }
+
+
+
+                } else if (option == 1) { // creating account
+                    userBase.add((UserAccount) is.readObject());
+                } else if (option == 2) {
+                    return;
+                }
             }
             //System.out.println(userBase.size());
 

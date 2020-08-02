@@ -1,15 +1,9 @@
 import java.io.Serializable;
 import java.util.Scanner;
-
-import javax.swing.JOptionPane;
-
 import java.util.ArrayList;
-import java.time.LocalDate;
 
 
 public class UserAccount implements Serializable {
-    private ArrayList<String> friends;
-    private ArrayList<UserAccount> user;
     private String userName;
     private String firstName;
     private String lastName;
@@ -18,28 +12,17 @@ public class UserAccount implements Serializable {
     private int bYear; //input needs to be validated
     private int bDate; //input needs to be validated
     private int bMonth; //input needs to be validated
+
     private String email;
     private String likes;
-
     private String interests;
     private String about;
     private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
-        
 
-        
-        /*public UserAccount(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String email, String messageStatus) {
-            this.userName = userName;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.age = age;
-            this.password = password;
-            this.bYear = bYear;
-            this.bDate = bDate;
-            this.bMonth = bMonth;
-            this.email = email;
-            this.messageStatus = messageStatus;
-            
-        }*/
+    //private ArrayList<UserAccount> user;
+    private ArrayList<UserAccount> friendList = new ArrayList<>();
+    private ArrayList<UserAccount> pendingList = new ArrayList<>();
+    private ArrayList<UserAccount> sendingList = new ArrayList<>();
 
     public UserAccount(String userName, String password) {
         this.userName = userName;
@@ -49,6 +32,7 @@ public class UserAccount implements Serializable {
     public UserAccount() {
 
     }
+
     public String getUserName() {
         return this.userName;
     }
@@ -112,7 +96,6 @@ public class UserAccount implements Serializable {
     }
 
     public String getLikes() {
-
         return likes;
     }
 
@@ -158,7 +141,29 @@ public class UserAccount implements Serializable {
         this.messageStatus = messageStatus;
     }
 
+    public ArrayList<UserAccount> getFriendList() {
+        return friendList;
+    }
 
+    public void setFriendList(ArrayList<UserAccount> friendList) {
+        this.friendList = friendList;
+    }
+
+    public ArrayList<UserAccount> getPendingList() {
+        return pendingList;
+    }
+
+    public void setPendingList(ArrayList<UserAccount> pendingList) {
+        this.pendingList = pendingList;
+    }
+
+    public ArrayList<UserAccount> getSendingList() {
+        return sendingList;
+    }
+
+    public void setSendingList(ArrayList<UserAccount> sendingList) {
+        this.sendingList = sendingList;
+    }
 
     public ArrayList<String> toArrayList() {
         ArrayList<String> result = new ArrayList<String>();
@@ -177,17 +182,9 @@ public class UserAccount implements Serializable {
 
 
     public String profileToString() {
-        return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:" + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email + "\n" + "About me: " + this.about + "\n" + "Likes: " + likes + "\n" + "Interest: " + interests);
-    }
-
-    public void printAccountInfo() {
-        System.out.println("Username: " + userName);
-        System.out.println("First Name: " + firstName);
-        System.out.println("Last Name: " + lastName);
-        System.out.println("Age: " + age);
-        System.out.println("Date of Birth: " + dOB());
-        System.out.println("Contact: " + email);
-        System.out.println("Status: " + messageStatus);
+        return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:"
+                + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email
+                + "\n" + "About me: " + this.about + "\n" + "Likes: " + likes + "\n" + "Interest: " + interests);
     }
 
     public static void main(String[] args) { //Ignore this. Just testing the format for DOB
