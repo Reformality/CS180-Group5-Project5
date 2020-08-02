@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Server implements Runnable {
     private Socket socket;
     public static ArrayList<UserAccount> userBase = new ArrayList<>();
-
+    public static UserAccount currentUser = new UserAccount();
     public Server(Socket socket) {
         this.socket = socket;
     }
@@ -52,6 +52,8 @@ public class Server implements Runnable {
                     do {
                         username = (String) is.readObject();
                         password = (String) is.readObject();
+                        currentUser.setUserName(username);
+                        currentUser.setPassword(password);
                         for (int i = 0; i < userBase.size(); i++) {
                             if (userBase.get(i).getUserName().equals(username) &&
                                     userBase.get(i).getPassword().equals(password)) {
@@ -161,14 +163,27 @@ public class Server implements Runnable {
                             String receiveUser;
                             System.out.println("pre flush");
                             Integer friendOptionInt = (Integer) is.readObject();
+                            
                             System.out.println("received friend option "+ friendOptionInt);
                             switch (friendOptionInt) {
                                 case 0:
+                                    Boolean noFriends = false;
+                                    do {
+                                        if (currentUser.getFriendList().size() == 0) {
+                                            noFriends = true;
+                                            
+                                        }  
+                                        
+                                        os.writeObject(noFriends);
+                                        os.flush(); 
+                                         
+                                    } while (noFriends != false);
                                     for (int i = 0; i < userBase.size(); i++) {
-                                        if (userBase.get(i).getUserName().equals(username)) {
-                                            os.writeObject(userBase.get(i).getFriendList());
-                                            os.flush();
-                                        }
+                                            if (userBase.get(i).getUserName().equals(username)) {
+                                                
+                                                os.writeObject(currentUser.getFriendList());
+                                                os.flush();
+                                            }
                                     }
                                     receiveUser = (String) is.readObject();
                                     for (int i = 0; i < userBase.size(); i++) {
@@ -178,11 +193,25 @@ public class Server implements Runnable {
                                         }
                                     }
                                     option_accountPage = true; // back to account page
-                                    break;
+                                    break; 
+                                
+                                    
                                 case 1:
+                                    noFriends = false;
+                                    do {
+                                        if (currentUser.getPendingList().size() == 0) {
+                                            noFriends = true;
+                                            
+                                        }  
+                                        
+                                        os.writeObject(noFriends);
+                                        os.flush(); 
+                                        
+                                    } while (noFriends != false);
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            os.writeObject(userBase.get(i).getPendingList());
+                                            
+                                            os.writeObject(currentUser.getPendingList());
                                             os.flush();
                                         }
                                     }
@@ -220,6 +249,7 @@ public class Server implements Runnable {
                                     option_accountPage = true; // back to account page
                                     break;
                                 case 2:
+                                    users.remove(currentUser.getUserName());
                                     os.writeObject(users);
                                     os.flush();
 
@@ -229,6 +259,7 @@ public class Server implements Runnable {
 
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
+                                            
                                             tempTargetUser2 = userBase.get(i);
                                         }
                                     }
@@ -301,4 +332,5 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
     }
+}
 }
