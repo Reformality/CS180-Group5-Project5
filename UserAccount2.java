@@ -8,7 +8,7 @@ import java.time.LocalDate;
     
      public class UserAccount implements Serializable {
         private ArrayList<String> friends;
-        private ArrayList<UserAccount2> user;
+        private ArrayList<UserAccount> user;
         private String userName;
         private String firstName;
         private String lastName;
