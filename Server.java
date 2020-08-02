@@ -267,7 +267,30 @@ public class Server implements Runnable {
 
 
                 } else if (option == 1) { // creating account
-                    userBase.add((UserAccount) is.readObject());
+                    String isNew = null;
+                    String isOld = null;
+                    String itsOld;
+                    System.out.println(isNew + " yay");
+                    do {                  
+                        isNew = (String) is.readObject();
+                        if (userBase.size() != 0) {
+
+                            for (int i = 0; i < userBase.size(); i++) {
+
+                                if (userBase.get(i).getUserName().equals(isNew)) {
+                                    isOld = userBase.get(i).getUserName();
+
+                                } 
+
+                            }
+                        }
+                        os.writeObject(isOld);
+
+                        os.flush(); 
+                        itsOld = (String) is.readObject();
+                    } while (itsOld != null);
+                    System.out.println("yay");
+                    userBase.add((UserAccount) is.readObject());  
                 } else if (option == 2) {
                     return;
                 }
