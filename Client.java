@@ -41,7 +41,7 @@ public class Client {
                     String username;
                     String password;
                     do {
-                        username = JOptionPane.showInputDialog(null, "Enter the username:",
+                        username = JOptionPane.showInputDialog(null, "Enter your username:",
                                 "Profile", JOptionPane.QUESTION_MESSAGE);
                         if ((username == null) || (username.isBlank())) {
                             JOptionPane.showMessageDialog(null, "Name cannot be empty!",
@@ -50,8 +50,8 @@ public class Client {
                         }
                     } while ((username == null) || (username.isBlank()));
                     do {
-                        password = JOptionPane.showInputDialog(null, "Enter the password:",
-                                "GPA Calculator", JOptionPane.QUESTION_MESSAGE);
+                        password = JOptionPane.showInputDialog(null, "Enter your password:",
+                                "Profile", JOptionPane.QUESTION_MESSAGE);
                         if ((password == null) || (password.isBlank())) {
                             JOptionPane.showMessageDialog(null, "Password cannot be empty!",
                                     "Profile",
@@ -82,10 +82,10 @@ public class Client {
                 while (option_accountPage) {
                 	option_accountPage = true;
                     // Choose from operations
-                    String[] mainOption = {"Account Info","Profile", "Friend", "Log Out"};
+                    String[] mainOption = {"Account Info", "Profile", "Friend", "Log Out"};
 
                     Integer optionInt = JOptionPane.showOptionDialog(null,
-                            "Do you want to like to do next? \n" +
+                            "What would you like to do next? \n" +
                                     "Change Account Information, View Profile or View Friend",
                             "Profile", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
                             null, mainOption, mainOption[1]);
@@ -94,7 +94,7 @@ public class Client {
                     if(optionInt == 0) { // account info
                         String[] accountOption = {"Edit Password", "Delete Account"};
                         Integer accountOptionInc = JOptionPane.showOptionDialog(null,
-                                "Do you want to like to do next? \n" +
+                                "What would you like to do next? \n" +
                                         "Change password or Delete account",
                                 "Profile", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                                 null, accountOption, accountOption[0]);
@@ -104,7 +104,7 @@ public class Client {
                             case 0:
                                 String password;
                                 do {
-                                    password = JOptionPane.showInputDialog(null, "Enter the new password:",
+                                    password = JOptionPane.showInputDialog(null, "Enter your new password:",
                                             "Profile", JOptionPane.QUESTION_MESSAGE);
                                     if ((password == null) || (password.isBlank())) {
                                         JOptionPane.showMessageDialog(null, "Password cannot be empty!",
@@ -137,7 +137,7 @@ public class Client {
                     } else if (optionInt == 1) { //Profile
                         String[] profileOption = {"Create and Edit Profile", "View Profile", "Delete Profile"};
                         Integer profileOptionInc = JOptionPane.showOptionDialog(null,
-                                "Do you want to like to do next? \n" +
+                                "What would you like to do next? \n" +
                                         "Create, Edit, or Delete your Profile",
                                 "Profile", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
                                 null, profileOption, profileOption[0]);
