@@ -47,7 +47,7 @@ public class Client {
 	                } while ((username == null) || (username.isBlank()));
 	                do {
 	                    password = JOptionPane.showInputDialog(null, "Enter your password:",
-	                            "GPA Calculator", JOptionPane.QUESTION_MESSAGE);
+	                            "Profile", JOptionPane.QUESTION_MESSAGE);
 	                    if ((password == null) || (password.isBlank())) {
 	                        JOptionPane.showMessageDialog(null, "Password cannot be empty!",
 	                                "Profile",
@@ -160,11 +160,12 @@ public class Client {
 				    do {
 					year = JOptionPane.showInputDialog(null, "Please enter your date of Birth in the format MM/DD/YYYY.", "Profile",
 						JOptionPane.QUESTION_MESSAGE);
-					if (!year.matches("[0-1][0-2]/[0-3][0-9]/[0-9][0-9][0-9][0-9]") || (year.matches("")) || year.isBlank()) {
-					    JOptionPane.showMessageDialog(null, "Please enter a valid year.", "Profile", JOptionPane.ERROR_MESSAGE);
+					//decided to use this method for input validation. However, I can't validate the day properly    
+					if (!year.matches("[0-1][0-2]/([0-3][0-1]|[0-2][0-9])/[0-9][0-9][0-9][0-9]") || (year.matches("")) || year.isBlank()) { 
+					    JOptionPane.showMessageDialog(null, "Please enter a valid date of birth.", "Profile", JOptionPane.ERROR_MESSAGE);
 					}
 
-				    } while (!year.matches("[0-1][0-2]/[0-3][0-9]/[0-9][0-9][0-9][0-9]") || (year.matches("")) || year.isBlank());
+				    } while (!year.matches("[0-1][0-2]/([0-3][0-1]|[0-2][0-9])/[0-9][0-9][0-9][0-9]") || (year.matches("")) || year.isBlank());
 				    doB = year.split("/");
 
 				    profileInfo.add(doB[0]);
@@ -175,7 +176,7 @@ public class Client {
 					age = JOptionPane.showInputDialog(null, "Please enter your age.", "Profile",
 						JOptionPane.QUESTION_MESSAGE);
 					if (!age.matches("-?\\d+(\\.\\d+)?") || (age.matches("")) || age.isBlank()) {
-					    JOptionPane.showMessageDialog(null, "Please enter a valid year.", "Profile", JOptionPane.ERROR_MESSAGE);
+					    JOptionPane.showMessageDialog(null, "Please enter a valid age.", "Profile", JOptionPane.ERROR_MESSAGE);
 					}
 
 				    } while (!age.matches("-?\\d+(\\.\\d+)?") || (age.matches("")) || age.isBlank());
