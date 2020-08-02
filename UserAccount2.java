@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
     
-     public class UserAccount2 {
+     public class UserAccount {
         private ArrayList<String> friends;
         private ArrayList<UserAccount2> user;
         private String userName;
@@ -26,7 +26,7 @@ import java.time.LocalDate;
         
 
         
-        /*public UserAccount2(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String email, String messageStatus) {
+        /*public UserAccount(String userName, String firstName, String lastName, int age, String password, int bYear, int bDate, int bMonth, String email, String messageStatus) {
             this.userName = userName;
             this.firstName = firstName;
             this.lastName = lastName;
@@ -40,12 +40,12 @@ import java.time.LocalDate;
             
         }*/
         
-        public UserAccount2(String userName, String password) {
+        public UserAccount(String userName, String password) {
             this.userName = userName;
             this.password = password;
         }
 
-        public UserAccount2() {
+        public UserAccount() {
 
         }
         public String getUserName() {
@@ -189,7 +189,7 @@ import java.time.LocalDate;
         }
 
         public static void main(String[] args) { //Ignore this. Just testing the format for DOB
-            UserAccount2 start = new UserAccount2();
+            UserAccount start = new UserAccount2();
             Scanner sc = new Scanner(System.in);
             
             int year = sc.nextInt();
