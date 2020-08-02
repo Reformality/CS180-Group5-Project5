@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
     
-     public class UserAccount {
+     public class UserAccount implements Serializable {
         private ArrayList<String> friends;
         private ArrayList<UserAccount2> user;
         private String userName;
