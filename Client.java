@@ -210,18 +210,33 @@ public class Client {
 	
 	
 	
-	        } else if(result == 1) { // creating account
-	            String username;
-	            String password;
-	            do {
-	                username = JOptionPane.showInputDialog(null, "Enter your username:",
-	                        "Profile", JOptionPane.QUESTION_MESSAGE);
-	                if ((username == null) || (username.isBlank())) {
-	                    JOptionPane.showMessageDialog(null, "Username cannot be empty!",
-	                            "Profile",
-	                            JOptionPane.ERROR_MESSAGE);
-	                }
-	            } while ((username == null) || (username.isBlank()));
+	        } else if(result == 1) { // creating account			
+		    //first checking if username is already in database			
+		    String username;
+		    String password;
+		    String isNew;
+		    do {
+			username = JOptionPane.showInputDialog(null, "Enter your username:",
+				"Profile", JOptionPane.QUESTION_MESSAGE);
+			os.writeObject(username);
+			os.flush();
+			System.out.println("yay");
+			isNew = (String) is.readObject();
+			System.out.println("yay");
+			if (!(username.equals(isNew))) {
+			    isNew = null;
+			}
+			if ((username == null) || (username.isBlank()) || (username.equals(isNew))) {
+			    isNew = username;
+			    JOptionPane.showMessageDialog(null, "Name is invalid/already taken!",
+				"Profile",
+				JOptionPane.ERROR_MESSAGE);
+
+			} 
+			os.writeObject(isNew);
+			os.flush();
+			System.out.println(isNew + " nay");
+		    } while ((username == null) || (username.isBlank()) || isNew != null);
 	
 	            do {
 	                password = JOptionPane.showInputDialog(null, "Enter your password:",
