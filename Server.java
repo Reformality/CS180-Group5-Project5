@@ -1,3 +1,4 @@
+package Project05;
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -221,34 +222,50 @@ public class Server implements Runnable {
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
                                             tempTargetUser = userBase.get(i);
+                                            currentUser.getFriendList().add(tempTargetUser);
+                                            currentUser.getPendingList().remove(currentUser);
+                                            currentUser.getPendingList().remove(tempTargetUser);
                                         }
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            tempThisUser = userBase.get(i);
+                                            tempThisUser = currentUser;
                                         }
                                     }
-                                    for (int i = 0; i < userBase.size(); i++) {
+                                    //this won't be needed anymore since the current user won't be in the list of friends to add
+                                    /*for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
-                                            userBase.get(i).getPendingList().remove(tempThisUser/*userBase.get(i).getPendingList().indexOf(tempThisUser)*/); //###BUGGED
-                                            userBase.get(i).getFriendList().add(tempThisUser);
-                                            System.out.println(userBase.get(i).getPendingList().size());
-                                            System.out.println(userBase.get(i).getSendingList().size());
-                                            System.out.println(userBase.get(i).getFriendList().size());
+                                            currentUser.getPendingList().remove(tempThisUser/*userBase.get(i).getPendingList().indexOf(tempThisUser)); //###BUGGED
+                                            /*currentUser.getFriendList().add(tempThisUser);
+                                            System.out.println(currentUser.getPendingList().size());
+                                            System.out.println(currentUser.getSendingList().size());
+                                            System.out.println(currentUser.getFriendList().size());
                                         }
-                                    }
+                                    /*}
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            userBase.get(i).getSendingList().remove(tempTargetUser/*userBase.get(i).getSendingList().indexOf(tempTargetUser)*/); //###BUGGED
-                                            userBase.get(i).getFriendList().add(tempTargetUser);
+                                            userBase.get(i).getSendingList().remove(tempTargetUser/*userBase.get(i).getSendingList().indexOf(tempTargetUser)); //###BUGGED
+                                            /*userBase.get(i).getFriendList().add(tempTargetUser);
                                             System.out.println(userBase.get(i).getPendingList().size());
                                             System.out.println(userBase.get(i).getSendingList().size());
                                             System.out.println(userBase.get(i).getFriendList().size());
-                                        }
-                                    }
+                                        }*/
+                                    /*}*/
                                     option_accountPage = true; // back to account page
                                     break;
                                 case 2:
+                                    
+                                    noFriends = false;
+                                    do {
+                                        if (users.size() == 0) {
+                                            noFriends = true;
+                                            
+                                        }  
+                                        
+                                        os.writeObject(noFriends);
+                                        os.flush(); 
+                                        
+                                    } while (noFriends != false);
                                     users.remove(currentUser.getUserName());
                                     os.writeObject(users);
                                     os.flush();
@@ -265,12 +282,12 @@ public class Server implements Runnable {
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            tempThisUser2 = userBase.get(i);
+                                            tempThisUser2 = currentUser;
                                         }
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
-                                            userBase.get(i).getPendingList().add(tempThisUser2);
+                                            currentUser.getPendingList().add(tempTargetUser2);
                                             System.out.println(userBase.get(i).getPendingList().size());
                                             System.out.println(userBase.get(i).getSendingList().size());
                                             System.out.println(userBase.get(i).getFriendList().size());
@@ -278,7 +295,7 @@ public class Server implements Runnable {
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            userBase.get(i).getSendingList().add(tempTargetUser2);
+                                            currentUser.getSendingList().add(tempTargetUser2);
                                             System.out.println(userBase.get(i).getPendingList().size());
                                             System.out.println(userBase.get(i).getSendingList().size());
                                             System.out.println(userBase.get(i).getFriendList().size());
@@ -332,5 +349,4 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
     }
-}
 }
