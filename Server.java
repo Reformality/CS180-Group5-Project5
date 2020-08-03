@@ -1,5 +1,3 @@
-import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +8,7 @@ import java.util.ArrayList;
 public class Server implements Runnable {
     private Socket socket;
     public static ArrayList<UserAccount> userBase = new ArrayList<>();
-    public static UserAccount currentUser = new UserAccount();
+
     public Server(Socket socket) {
         this.socket = socket;
     }
@@ -52,8 +50,6 @@ public class Server implements Runnable {
                     do {
                         username = (String) is.readObject();
                         password = (String) is.readObject();
-                        currentUser.setUserName(username);
-                        currentUser.setPassword(password);
                         for (int i = 0; i < userBase.size(); i++) {
                             if (userBase.get(i).getUserName().equals(username) &&
                                     userBase.get(i).getPassword().equals(password)) {
@@ -67,8 +63,9 @@ public class Server implements Runnable {
                     option_accountPage = true;
 
                     while (option_accountPage) {
-                    	users = new ArrayList<>();
-                    	option_accountPage = true;
+                        os.reset();
+                        users = new ArrayList<>();
+                        option_accountPage = true;
                         // Check users
                         if (userBase.size() > 1) {
                             for (int i = 0; i < userBase.size(); i++) {
@@ -76,9 +73,7 @@ public class Server implements Runnable {
                             }
                         }
                         //select operations
-                        System.out.println("Account Menu Pre");
                         Integer optionInt = (Integer) is.readObject();
-                        System.out.println("Account Menu Post + " + optionInt);
                         if (optionInt == 0) { // account info
                             Integer accountOptionInc = (Integer) is.readObject();
                             switch (accountOptionInc) {
@@ -161,29 +156,30 @@ public class Server implements Runnable {
 
                         } else if (optionInt == 2) { //friend
                             String receiveUser;
+                            Boolean noFriends = false;
                             System.out.println("pre flush");
                             Integer friendOptionInt = (Integer) is.readObject();
-                            
                             System.out.println("received friend option "+ friendOptionInt);
                             switch (friendOptionInt) {
                                 case 0:
-                                    Boolean noFriends = false;
                                     do {
-                                        if (currentUser.getFriendList().size() == 0) {
-                                            noFriends = true;
-                                            
-                                        }  
-                                        
-                                        os.writeObject(noFriends);
-                                        os.flush(); 
-                                         
-                                    } while (noFriends != false);
-                                    for (int i = 0; i < userBase.size(); i++) {
+                                        for (int i = 0; i < userBase.size(); i++) {
                                             if (userBase.get(i).getUserName().equals(username)) {
-                                                
-                                                os.writeObject(currentUser.getFriendList());
-                                                os.flush();
+                                                if (userBase.get(i).getFriendList().size() == 0) {
+                                                    noFriends = true;
+                                                }
                                             }
+                                        }
+
+                                        os.writeObject(noFriends);
+                                        os.flush();
+                                    } while (noFriends);
+
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            os.writeObject(userBase.get(i).getFriendList());
+                                            os.flush();
+                                        }
                                     }
                                     receiveUser = (String) is.readObject();
                                     for (int i = 0; i < userBase.size(); i++) {
@@ -193,25 +189,24 @@ public class Server implements Runnable {
                                         }
                                     }
                                     option_accountPage = true; // back to account page
-                                    break; 
-                                
-                                    
+                                    break;
                                 case 1:
-                                    noFriends = false;
                                     do {
-                                        if (currentUser.getPendingList().size() == 0) {
-                                            noFriends = true;
-                                            
-                                        }  
-                                        
+                                        for (int i = 0; i < userBase.size(); i++) {
+                                            if (userBase.get(i).getUserName().equals(username)) {
+                                                if (userBase.get(i).getPendingList().size() == 0) {
+                                                    noFriends = true;
+                                                }
+                                            }
+                                        }
+
                                         os.writeObject(noFriends);
-                                        os.flush(); 
-                                        
-                                    } while (noFriends != false);
+                                        os.flush();
+                                    } while (noFriends);
+
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            
-                                            os.writeObject(currentUser.getPendingList());
+                                            os.writeObject(userBase.get(i).getPendingList());
                                             os.flush();
                                         }
                                     }
@@ -221,29 +216,28 @@ public class Server implements Runnable {
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
                                             tempTargetUser = userBase.get(i);
-                                            currentUser.getFriendList().add(tempTargetUser);
-                                            currentUser.getPendingList().remove(currentUser);
-                                            currentUser.getPendingList().remove(tempTargetUser);
                                         }
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            tempThisUser = currentUser;
+                                            tempThisUser = userBase.get(i);
                                         }
                                     }
-                                    
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
-                                            currentUser.getPendingList().remove(tempThisUser/*userBase.get(i).getPendingList().indexOf(tempThisUser)*/); //###BUGGED
-                                            currentUser.getFriendList().add(tempThisUser);
-                                            System.out.println(currentUser.getPendingList().size());
-                                            System.out.println(currentUser.getSendingList().size());
-                                            System.out.println(currentUser.getFriendList().size());
+                                            System.out.println(userBase.get(i).getPendingList().size());
+                                            System.out.println("\n");
+                                            userBase.get(i).getPendingList().remove(tempThisUser); //###BUGGED
+                                            userBase.get(i).getFriendList().add(tempThisUser);
+                                            System.out.println("case 1 checking");
+                                            System.out.println(userBase.get(i).getPendingList().size());
+                                            System.out.println(userBase.get(i).getSendingList().size());
+                                            System.out.println(userBase.get(i).getFriendList().size());
                                         }
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            userBase.get(i).getSendingList().remove(tempTargetUser/*userBase.get(i).getSendingList().indexOf(tempTargetUser)*/); //###BUGGED
+                                            userBase.get(i).getSendingList().remove(tempTargetUser); //###BUGGED
                                             userBase.get(i).getFriendList().add(tempTargetUser);
                                             System.out.println(userBase.get(i).getPendingList().size());
                                             System.out.println(userBase.get(i).getSendingList().size());
@@ -253,19 +247,21 @@ public class Server implements Runnable {
                                     option_accountPage = true; // back to account page
                                     break;
                                 case 2:
-                                    
-                                    noFriends = false;
                                     do {
                                         if (users.size() == 0) {
                                             noFriends = true;
-                                            
-                                        }  
-                                        
+                                        }
+
                                         os.writeObject(noFriends);
-                                        os.flush(); 
-                                        
-                                    } while (noFriends != false);
-                                    users.remove(currentUser.getUserName());
+                                        os.flush();
+                                    } while (noFriends);
+
+                                    for (int i = 0; i < userBase.size(); i++) {
+                                        if (userBase.get(i).getUserName().equals(username)) {
+                                            users.remove(userBase.get(i).getUserName());
+                                        }
+                                    }
+
                                     os.writeObject(users);
                                     os.flush();
 
@@ -275,18 +271,17 @@ public class Server implements Runnable {
 
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
-                                            
                                             tempTargetUser2 = userBase.get(i);
                                         }
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            tempThisUser2 = currentUser;
+                                            tempThisUser2 = userBase.get(i);
                                         }
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
-                                            currentUser.getPendingList().add(tempTargetUser2);
+                                            userBase.get(i).getPendingList().add(tempThisUser2);
                                             System.out.println(userBase.get(i).getPendingList().size());
                                             System.out.println(userBase.get(i).getSendingList().size());
                                             System.out.println(userBase.get(i).getFriendList().size());
@@ -294,7 +289,7 @@ public class Server implements Runnable {
                                     }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            currentUser.getSendingList().add(tempTargetUser2);
+                                            userBase.get(i).getSendingList().add(tempTargetUser2);
                                             System.out.println(userBase.get(i).getPendingList().size());
                                             System.out.println(userBase.get(i).getSendingList().size());
                                             System.out.println(userBase.get(i).getFriendList().size());
@@ -318,7 +313,7 @@ public class Server implements Runnable {
                     String isOld = null;
                     String itsOld;
                     System.out.println(isNew + " yay");
-                    do {                  
+                    do {
                         isNew = (String) is.readObject();
                         if (userBase.size() != 0) {
 
@@ -326,24 +321,20 @@ public class Server implements Runnable {
 
                                 if (userBase.get(i).getUserName().equals(isNew)) {
                                     isOld = userBase.get(i).getUserName();
-
-                                } 
-
+                                }
                             }
                         }
                         os.writeObject(isOld);
 
-                        os.flush(); 
+                        os.flush();
                         itsOld = (String) is.readObject();
                     } while (itsOld != null);
                     System.out.println("yay");
-                    userBase.add((UserAccount) is.readObject());  
+                    userBase.add((UserAccount) is.readObject());
                 } else if (option == 2) {
                     return;
                 }
             }
-            //System.out.println(userBase.size());
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
