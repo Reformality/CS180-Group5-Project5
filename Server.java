@@ -231,25 +231,25 @@ public class Server implements Runnable {
                                             tempThisUser = currentUser;
                                         }
                                     }
-                                    //this won't be needed anymore since the current user won't be in the list of friends to add
-                                    /*for (int i = 0; i < userBase.size(); i++) {
+                                    
+                                    for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(receiveUser)) {
-                                            currentUser.getPendingList().remove(tempThisUser/*userBase.get(i).getPendingList().indexOf(tempThisUser)); //###BUGGED
-                                            /*currentUser.getFriendList().add(tempThisUser);
+                                            currentUser.getPendingList().remove(tempThisUser/*userBase.get(i).getPendingList().indexOf(tempThisUser)*/); //###BUGGED
+                                            currentUser.getFriendList().add(tempThisUser);
                                             System.out.println(currentUser.getPendingList().size());
                                             System.out.println(currentUser.getSendingList().size());
                                             System.out.println(currentUser.getFriendList().size());
                                         }
-                                    /*}
+                                    }
                                     for (int i = 0; i < userBase.size(); i++) {
                                         if (userBase.get(i).getUserName().equals(username)) {
-                                            userBase.get(i).getSendingList().remove(tempTargetUser/*userBase.get(i).getSendingList().indexOf(tempTargetUser)); //###BUGGED
-                                            /*userBase.get(i).getFriendList().add(tempTargetUser);
+                                            userBase.get(i).getSendingList().remove(tempTargetUser/*userBase.get(i).getSendingList().indexOf(tempTargetUser)*/); //###BUGGED
+                                            userBase.get(i).getFriendList().add(tempTargetUser);
                                             System.out.println(userBase.get(i).getPendingList().size());
                                             System.out.println(userBase.get(i).getSendingList().size());
                                             System.out.println(userBase.get(i).getFriendList().size());
-                                        }*/
-                                    /*}*/
+                                        }
+                                    }
                                     option_accountPage = true; // back to account page
                                     break;
                                 case 2:
