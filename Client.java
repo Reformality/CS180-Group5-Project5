@@ -1,4 +1,11 @@
 import javax.swing.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+
+import javax.swing.*;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -272,7 +279,7 @@ public class Client {
                                 option_accountPage = true; // back to account page
                                 break;
                             case 1: // Pending Friend list
-                            noFriend = (Boolean) is.readObject();
+                               noFriend = (Boolean) is.readObject();
                                 System.out.println(noFriend);
                                 if (noFriend == true) {
                                     
@@ -297,6 +304,15 @@ public class Client {
                                 option_accountPage = true; // back to account page
                                 break;
                             case 2: //Send Friend Request
+                                noFriend = (Boolean) is.readObject();
+                                System.out.println(noFriend);
+                                if (noFriend == true) {
+                                    
+                                    JOptionPane.showMessageDialog(null, "There's no one else to send a request to.",
+                                    "Profile", JOptionPane.INFORMATION_MESSAGE);
+                                    option_accountPage = true;
+                                    break;
+                                } 
                                 ArrayList<String> users = (ArrayList<String>) is.readObject();
                                 String[] usersArr = users.toArray(new String[users.size()]);
                                 do {
@@ -308,6 +324,7 @@ public class Client {
                                 os.flush();
                                 option_accountPage = true; // back to account page
                                 break;
+                            
                         }
 
 
