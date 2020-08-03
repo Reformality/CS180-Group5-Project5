@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 public class UserAccount implements Serializable {
+    //fields
     private String userName;
     private String firstName;
     private String lastName;
@@ -19,7 +20,6 @@ public class UserAccount implements Serializable {
     private String about;
     private String messageStatus; //not sure if this needs to be included, but it's for the user's status.
 
-    //private ArrayList<UserAccount> user;
     public ArrayList<UserAccount> friendList = new ArrayList<>();
     public ArrayList<UserAccount> pendingList = new ArrayList<>();
     public ArrayList<UserAccount> sendingList = new ArrayList<>();
@@ -28,7 +28,8 @@ public class UserAccount implements Serializable {
         this.userName = userName;
         this.password = password;
     }
-
+    
+    //empty constructor
     public UserAccount() {
 
     }
@@ -48,7 +49,6 @@ public class UserAccount implements Serializable {
         this.firstName = firstName;
     }
 
-
     public String getLastName() {
         return this.lastName;
     }
@@ -62,7 +62,6 @@ public class UserAccount implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     public int getAge() {
         return this.age;
@@ -165,26 +164,11 @@ public class UserAccount implements Serializable {
         this.sendingList = sendingList;
     }
 
-    public ArrayList<String> toArrayList() {
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(userName);
-        result.add(firstName);
-        result.add(lastName);
-        result.add(String.valueOf(age));
-        result.add(password);
-        result.add(String.valueOf(bYear));
-        result.add(String.valueOf(bDate));
-        result.add(String.valueOf(bMonth));
-        result.add(messageStatus);
-
-        return result;
-    }
-
-
     public String profileToString() {
-        return String.format("First:" + this.firstName + "\n" + "Last:" + this.lastName + "\n" + "Username:"
-                + this.userName + "\n" + "Age:" + this.age + "\n" + "DOB:" + dOB() + "\n" + "Email:" + this.email
-                + "\n" + "About me: " + this.about + "\n" + "Likes: " + likes + "\n" + "Interest: " + interests);
+        return String.format("First name: " + this.firstName + "\n" + "Last name: " + this.lastName + "\n" + "Username: "
+                + this.userName + "\n" + "Age: " + this.age + "\n" + "DOB: " + dOB() + "\n" + "Email: " + this.email
+                + "\n" + "About me: " + this.about + "\n" + "Likes: " + likes + "\n" + "Interests: " + interests 
+                + "\n" + "Status: " + messageStatus);
     }
 
     public static void main(String[] args) { //Ignore this. Just testing the format for DOB
