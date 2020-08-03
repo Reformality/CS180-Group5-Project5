@@ -21,7 +21,14 @@ public class TestCase {
         /** Testing Method
          *  This section of code will test security of the data type in UserAccount.java
          */
+        System.out.println("Since both Server.java and Client.java have only run()/main()," +
+                "\ntest the program instead!\n" +
+                "Please refer to the README for detailed testing sequence!");
 
-        // continue here...
+        /** Implementation Tests
+         *
+         */
+
+        System.out.println("Please refer to README for GUI testcases!");
     }
 }
